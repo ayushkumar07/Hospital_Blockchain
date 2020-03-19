@@ -11,14 +11,23 @@ contract Healthcare{
     }
     struct links{
         string [] hash;
+        string [] time;
+    }
+    struct hospital_data {
+        string hosp_name;
+        string hosp_add;
+        string hosp_city;
+        string hosp_country;
     }
     
     mapping(uint256 => person) private patient;
     mapping(uint256 => links) private hashes; 
     mapping(uint256 => bool) private check;
+    mapping (address => hospital_data) private Hospital_Info;
     
     constructor() public {
         owners[msg.sender] = true;
+        Hospital_Info[msg.sender] = hospital_data("Contract Initialiser" ,"Dwarka Sector - 1","New Delhi","India");
         id = 1000;
     } 
     
@@ -35,6 +44,10 @@ contract Healthcare{
         
         return false;
     }
+    function HospitalDetail () public view onlyOwner returns(string memory hname, string memory hadd, string memory hcity, string memory hcountry){
+        hospital_data memory H = Hospital_Info[msg.sender];
+        return (H.hosp_name,H.hosp_add, H.hosp_city, H.hosp_country);        
+    }
     
     function addPatient(string memory _name, string memory _dob, string memory _gender, string memory _bloodgrp) public onlyOwner{
         id++ ;
@@ -49,15 +62,16 @@ contract Healthcare{
         return false;
     }
     
-    function addRecords(uint256 _id, string memory _hash) public onlyOwner {
+    function addRecords(uint256 _id, string memory _hash, string memory _time) public onlyOwner {
         require(check[_id]);
         hashes[_id].hash.push(_hash);
+        hashes[_id].time.push(_time);
     }
     
-    function retrieve(uint256 _id)public view onlyOwner returns(string memory _name , string memory _age, string memory _gender, string memory _bloodgrp, string [] memory _hashes){
+    function retrieve(uint256 _id)public view onlyOwner returns(string memory _name , string memory _age, string memory _gender, string memory _bloodgrp, string [] memory _hashes, string [] memory _time){
         require(check[_id]);
         person memory P = patient[_id];
-        return (P.name, P.age, P.gender, P.bloodgrp,hashes[_id].hash);
+        return (P.name, P.age, P.gender, P.bloodgrp,hashes[_id].hash, hashes[_id].time);
     } 
     
 }

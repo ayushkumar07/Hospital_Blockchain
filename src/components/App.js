@@ -37,10 +37,12 @@ class App extends Component {
     const accounts = await web3.eth.getAccounts()
     this.setState({ account: accounts[0] })
     const networkId = await web3.eth.net.getId()
+
     const networkData = Healthcare.networks[networkId]
     if(networkData){
       const healthcare = await web3.eth.Contract(Healthcare.abi, networkData.address)
       this.setState({ healthcare })
+      this.state.Hospital_Details = await this.state.healthcare.methods.HospitalDetail().call({from : this.state.account})
       this.state.owner = await this.state.healthcare.methods.checkOwner().call({from: this.state.account})
       this.setState({loading : false})
        }
@@ -56,6 +58,7 @@ class App extends Component {
       account: '',
       owner: false,
       loading: true,
+      Hospital_Details : null,
       metamaskInstalled: false,
       buffer : null,
       p_id : null,
@@ -89,7 +92,7 @@ captureFile(event){
         console.error(error)
         return
       }
-       this.state.healthcare.methods.addRecords(Number(event),this.state.ipfsLink+result[0].hash).send({ from: this.state.account })
+       this.state.healthcare.methods.addRecords(Number(event),this.state.ipfsLink+result[0].hash, toString(new Date())).send({ from: this.state.account })
        .once('receipt', (receipt) => {
         window.alert('Medical History Updated Successfully')
           this.setState({ Hash: result[0].hash })
@@ -100,14 +103,16 @@ captureFile(event){
   }
 
   Register(name , dob, gender, bloodgrp){
+    this.setState({loading : true})
+    console.log("Registering Patient Details")
     this.state.healthcare.methods.addPatient(name,dob,gender,bloodgrp).send({from :this.state.account}) 
+    this.setState({loading : false})
   }
 
 
   render() {
   let content
   let loading
-  let retrieve
     if(this.state.metamaskInstalled === false && this.state.loading === false){
       window.alert('Install Metamask!!!')
       content = <h1> Please Install Metamask !!! Reload After Installing</h1>
@@ -120,13 +125,14 @@ captureFile(event){
       if(this.state.owner === true){
 
 
-      content = <div> <h3> Hello Hospital!!! </h3>
+      content = <div> <h3> Welcome {this.state.Hospital_Details.hname}!!! </h3>
+      <p> Address : {this.state.Hospital_Details.hadd}, {this.state.Hospital_Details.hcity}, {this.state.Hospital_Details.hcountry} </p>
+
             <div>
 
               <Register_Patient
-                  Register = {this.Register} />
+                  Register = {this.Register}/>
             </div>
-             
             <div>
              <AddToIpfs
                   Patient_id = {this.state.Patient_id}
