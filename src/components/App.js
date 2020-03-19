@@ -42,7 +42,7 @@ class App extends Component {
     if(networkData){
       const healthcare = await web3.eth.Contract(Healthcare.abi, networkData.address)
       this.setState({ healthcare })
-      this.state.Hospital_Details = await this.state.healthcare.methods.HospitalDetail().call({from : this.state.account})
+      this.state.Hospital_Details = await this.state.healthcare.methods.HospitalDetail(this.state.account).call({from : this.state.account})
       this.state.owner = await this.state.healthcare.methods.checkOwner().call({from: this.state.account})
       this.setState({loading : false})
        }
@@ -92,7 +92,7 @@ captureFile(event){
         console.error(error)
         return
       }
-       this.state.healthcare.methods.addRecords(Number(event),this.state.ipfsLink+result[0].hash, toString(new Date())).send({ from: this.state.account })
+       this.state.healthcare.methods.addRecords(Number(event),this.state.ipfsLink+result[0].hash, (new Date()).toString()).send({ from: this.state.account })
        .once('receipt', (receipt) => {
         window.alert('Medical History Updated Successfully')
           this.setState({ Hash: result[0].hash })
@@ -102,10 +102,10 @@ captureFile(event){
   
   }
 
-  Register(name , dob, gender, bloodgrp){
+  Register(name , dob, bloodgrp){
     this.setState({loading : true})
     console.log("Registering Patient Details")
-    this.state.healthcare.methods.addPatient(name,dob,gender,bloodgrp).send({from :this.state.account}) 
+    this.state.healthcare.methods.addPatient(name,dob,bloodgrp).send({from :this.state.account}) 
     this.setState({loading : false})
   }
 

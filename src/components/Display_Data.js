@@ -5,6 +5,7 @@ class Display_Data extends Component {
     this.props.healthcare.methods.retrieve(this.props.p_id).call({from : this.props.account})
     .then((result) => {
       this.setState({retrieved : result})
+     
     })
     
   }
@@ -16,28 +17,26 @@ class Display_Data extends Component {
     }
   }
 	 render() {
+     let tt = []
+     if(this.state.retrieved){
+      for (var i = this.state.retrieved._hashes.length - 1; i >= 0; i--) {
+        tt.push(<li> {this.state.retrieved._hospital[i]}, {this.state.retrieved._time[i]} , <a href={this.state.retrieved._hashes[i]}>History Link</a> </li>)
+      }
 
+      console.log(tt)
+    }
     return (
     	<div>
     	<div>
         <h3> Medical History of Patient ID:  </h3>
-      
+      {console.log(this.state.tt)}
         {this.state.retrieved ? 
           <div>
           <div> <h4>Name: {this.state.retrieved._name} </h4> 
           <h4> Date Of Birth : {this.state.retrieved._age} </h4>
-          <h4> Gender : {this.state.retrieved._gender} </h4>
           <h4> Blood Group : {this.state.retrieved._bloodgrp}</h4></div>
-
-            <tbody>
-               { this.state.retrieved._hashes.map((product, key) => {
-              return(
-                <tr key={key}>
-                  <td><a href={product}>History Link</a> </td>
-                </tr>
-              )
-            } ) }
-            </tbody>
+          
+          {tt}
             
           </div>
           : <div>  </div>

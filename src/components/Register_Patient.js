@@ -11,9 +11,8 @@ class Register_Patient extends Component {
                   event.preventDefault()
                   const Name = this.name.value
                   const Dob = this.dob.value
-                  const Gender = this.gender.value
                   const BloodGrp = this.bloodgrp.value
-                  this.props.Register(Name, Dob, Gender, BloodGrp)
+                  this.props.Register(Name, Dob, BloodGrp)
                 }}>
               <label> Name : 
                 <input
@@ -29,13 +28,7 @@ class Register_Patient extends Component {
                     ref={(input) => { this.dob = input }}
                     required />
                </label>
-               <label> Gender :                  
-                 <input
-                    id="gender"
-                    type="text"
-                    ref={(input) => { this.gender = input }}
-                    required />
-               </label>
+
                <label> Blood Group :
                 <input
                     id="bloodgrp"
