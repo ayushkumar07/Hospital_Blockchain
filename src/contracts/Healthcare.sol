@@ -28,14 +28,29 @@ contract Healthcare{
     constructor() public {
         owners[msg.sender] = true;
         Hospital_Info[msg.sender] = hospital_data("Contract Initialiser" ,"Dwarka Sector - 1","New Delhi","India");
-        id = 1000;
+        
+        address temp = 0x318E57a2e28868B100Aad751eeF1136E854e765a;
+        owners[temp] = true;
+        Hospital_Info[temp] = hospital_data("Deen Dayal Upadhayay Hospital", "Tilak Nagar","New Delhi","India");
+        
+        temp = 0x692991888659c3e8Ad043B262B0AF97415eA4aDB;
+        owners[temp] = true;
+        Hospital_Info[temp] = hospital_data("Maharaja Agrasen Hospital","Dwarka Sector - 1","New Delhi","India");
+
+        temp = 0x47bAD77AE2ad383d1ec9aFCD126d3B8629FF1BB0;
+        owners[temp] = true;
+        Hospital_Info[temp] = hospital_data("Fortis Hospital","Bandra","Mumbai","India");
+
+        temp = 0x246DBf38765Ab779a53c4DB220df5DB83Af8B211;
+        owners[temp]= true;
+        Hospital_Info[temp] = hospital_data("World Health Organisation","City Park","New York","United States Of America");
     } 
     
     modifier onlyOwner {
         require(owners[msg.sender] == true);
         _;
     }
-    uint256 private id;
+
     
     function checkOwner() public view returns(bool _own){
         if(owners[msg.sender]){
