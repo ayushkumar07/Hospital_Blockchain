@@ -48,10 +48,9 @@ contract Healthcare{
         return (H.hosp_name,H.hosp_add, H.hosp_city, H.hosp_country);        
     }
     
-    function addPatient(string memory _name, string memory _dob, string memory _bloodgrp) public onlyOwner{
-        id++ ;
-        patient[id] = person(_name,_dob, _bloodgrp);
-        check[id] = true;
+    function addPatient(uint256 _id, string memory _name, string memory _dob, string memory _bloodgrp) public onlyOwner{
+        patient[_id] = person(_name,_dob, _bloodgrp);
+        check[_id] = true;
     }
     
     function checkID(uint256 _id) public view returns(bool _checkid){

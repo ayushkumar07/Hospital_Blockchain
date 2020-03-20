@@ -23,13 +23,12 @@ class Display_Data extends Component {
         tt.push(<li> {this.state.retrieved._hospital[i]}, {this.state.retrieved._time[i]} , <a href={this.state.retrieved._hashes[i]}>History Link</a> </li>)
       }
 
-      console.log(tt)
     }
     return (
     	<div>
     	<div>
-        <h3> Medical History of Patient ID:  </h3>
-      {console.log(this.state.tt)}
+        <h3> Medical History of Patient ID: {this.props.p_id} </h3>
+    
         {this.state.retrieved ? 
           <div>
           <div> <h4>Name: {this.state.retrieved._name} </h4> 

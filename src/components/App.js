@@ -4,7 +4,8 @@ import Web3 from 'web3'
 import Healthcare from '../abis/Healthcare.json'
 import AddToIpfs from './AddToIpfs'
 import Register_Patient from './Register_Patient'
-import Display_Data from './Display_Data';
+import Display_Data from './Display_Data'
+import Hospital from './Hospital'
  
 class App extends Component {
 
@@ -61,12 +62,15 @@ class App extends Component {
       Hospital_Details : null,
       metamaskInstalled: false,
       buffer : null,
-      p_id : null,
+      print : false,
+      display_msg : <h5></h5>,
       ipfsLink: 'https://ipfs.infura.io/ipfs/'
     }
     this.captureFile = this.captureFile.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.Register = this.Register.bind(this);
+    this.HospitalInformation = this.HospitalInformation.bind(this);
+    this.CheckID = this.CheckID.bind(this);
   }
 
 
@@ -102,13 +106,25 @@ captureFile(event){
   
   }
 
-  Register(name , dob, bloodgrp){
+  Register(name , _id, dob, bloodgrp){
     this.setState({loading : true})
     console.log("Registering Patient Details")
-    this.state.healthcare.methods.addPatient(name,dob,bloodgrp).send({from :this.state.account}) 
+    this.state.healthcare.methods.addPatient(_id,name,dob,bloodgrp).send({from :this.state.account}) 
     this.setState({loading : false})
   }
 
+  HospitalInformation(address){
+    this.setState({loading : true})
+    console.log("Fetching Hospital Details")
+    const temp = this.state.healthcare.methods.HospitalDetail(address).call({from : this.state.account})
+    this.setState({Hospital_Info : temp})
+    this.setState({loading : false})
+  }
+
+  CheckID(p_id){
+      const temp = this.state.healthcare.methods.checkID(p_id).call({from : this.state.account})
+      return temp;  
+  }
 
   render() {
   let content
@@ -131,20 +147,38 @@ captureFile(event){
             <div>
 
               <Register_Patient
-                  Register = {this.Register}/>
+                  Register = {this.Register}
+                  CheckID = {this.CheckID} />
             </div>
             <div>
              <AddToIpfs
                   Patient_id = {this.state.Patient_id}
                   buffer ={this.state.buffer}
                   captureFile={this.captureFile}
-                  onSubmit={this.onSubmit} />
+                  onSubmit={this.onSubmit}
+                  CheckID ={this.CheckID} 
+                  healthcare={this.state.healthcare}/>
             </div>
+
+
             <div>
               <h3> Retrieve Patient's Medical History </h3>
               <form onSubmit = {(event)=>{
                 event.preventDefault()
-               this.setState({p_id : Number(this.p_id.value)})
+                this.CheckID(Number(this.p_id.value))
+                  .then((result) =>{
+                     if(result === true){
+                        this.setState({print :true,
+                          display_msg : <h5></h5>,
+                          p_id : Number(this.p_id.value)
+                        })
+                      }
+                      else{
+                        this.setState({print : false ,
+                          display_msg : <h5>Invalid Patient ID</h5>
+                        })
+                      }
+                  })
               }} >
                 <input id="p_id"
                   type = "text" 
@@ -153,12 +187,14 @@ captureFile(event){
                   required />
                   <button type="submit">SUBMIT</button>
               </form>
-              {this.state.p_id ?
+              {this.state.print ?
                 <Display_Data
                     healthcare = {this.state.healthcare} 
                     p_id = {this.state.p_id}
-                    account ={this.state.account} /> : <div>  </div>
+                    account ={this.state.account}
+                    CheckID = {this.CheckID} /> : <div></div>
               }
+              {this.state.display_msg}
             </div>
           </div>
                   
@@ -176,7 +212,32 @@ captureFile(event){
            <p>  Your Unique Address : {this.state.account}</p>
 
            { this.state.loading ? loading : content } 
+
+
            
+           {this.state.account ?
+          <div>
+              <h3> Get Hospital's Details using its Unique Address </h3>
+              <form onSubmit = {(event)=>{
+                event.preventDefault()
+               this.setState({h_id : this.h_id.value})
+              }} >
+                <input id="h_id"
+                  type = "text" 
+                  ref={(input) => { this.h_id = input }}
+                  placeholder="E.g. 0x692991888659c3e8Ad043B262B0AF97415eA4aDB"
+                  required />
+                  <button type="submit">SUBMIT</button>
+              </form>
+              {this.state.h_id ?
+                <Hospital
+                    healthcare = {this.state.healthcare} 
+                    h_id = {this.state.h_id}
+                    account ={this.state.account} /> : <div>  </div>
+              }
+            </div>
+            : <h4> Install MetaMask For Further Features </h4>
+            }
         </div> 
     );
   }
