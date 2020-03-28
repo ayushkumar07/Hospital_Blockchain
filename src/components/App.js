@@ -6,6 +6,7 @@ import AddToIpfs from './AddToIpfs'
 import Register_Patient from './Register_Patient'
 import Display_Data from './Display_Data'
 import Hospital from './Hospital'
+import Metamask from './Metamask'
  
 class App extends Component {
 
@@ -134,14 +135,17 @@ captureFile(event){
       content = <h1> Please Install Metamask !!! Reload After Installing</h1>
     }
       if(this.state.loading) {
-      loading = <div ><h1>Loading... And Make Sure MetaMask is Installed</h1></div>
+      loading = <div className="my-5 text-center"><h1>Loading... And Make Sure MetaMask is Installed</h1></div>
     } 
 
     else if(this.state.loading === false && this.state.metamaskInstalled === true){
       if(this.state.owner === true){
 
 
-      content = <div> <h3> Welcome {this.state.Hospital_Details.hname}!!! </h3>
+      content = <div>
+                 <p>  Your Unique Address : {this.state.account}</p>
+
+       <h3> Welcome {this.state.Hospital_Details.hname}!!! </h3>
       <p> Address : {this.state.Hospital_Details.hadd}, {this.state.Hospital_Details.hcity}, {this.state.Hospital_Details.hcountry} </p>
 
             <div>
@@ -200,7 +204,10 @@ captureFile(event){
                   
         
     } else {
-      content = <h2> Hi, Seems that your Unique address does not have a permission to enter further. </h2>
+      content =<div>
+                 <p>  Your Unique Address : {this.state.account}</p>
+           <h2> Hi, Seems that your Unique address does not have a permission to enter further. </h2>
+           </div>
     }
   }
 
@@ -209,11 +216,7 @@ captureFile(event){
     return (      
 
         <div>
-           <p>  Your Unique Address : {this.state.account}</p>
-
-           { this.state.loading ? loading : content } 
-
-
+            { this.state.loading ? loading : content } 
            
            {this.state.account ?
           <div>
@@ -236,7 +239,7 @@ captureFile(event){
                     account ={this.state.account} /> : <div>  </div>
               }
             </div>
-            : <h4> Install MetaMask For Further Features </h4>
+            : <Metamask />
             }
         </div> 
     );
