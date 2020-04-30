@@ -1,6 +1,12 @@
 # Hospital_Blockchain
 
-1. To run this website, you need to install an extension called Metamask using this link : https://metamask.io/
+Link to the website : https://gateway.pinata.cloud/ipfs/QmeDdTHeAd5QWjHMRaUu6RV8fiYhDo6pC8vtXosf7xV9vi/
+
+
+
+To run this website, you need to follow some steps for initialisation. This is one time initialization process, that is, you don't have to follow these instructions everytime you run this website.
+
+1. Install an extension called Metamask using this link : https://metamask.io/
 
 2. Create your wallet.
 
@@ -10,6 +16,4 @@
 
 5. You are now one of many hospitals listed on the blockchain network.
 
-6. Now click on the link given below to run this website.
-
-link : https://gateway.pinata.cloud/ipfs/QmS5vfifnz92vAuPnGNBCFJXgFCsYDtAromCvKcGSDTU4f/
+6. Now click on the above given link to run this website.
