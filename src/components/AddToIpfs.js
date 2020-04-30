@@ -9,11 +9,11 @@ class AddToIpfs extends Component {
       valid : false,
     }
   }
-	 render() {
+   render() {
     let print = false;
     return (
-    	<div>
-    	<div>
+      <div>
+      <div>
         <h3> Add Records </h3>
          <form onSubmit={(event) => {
                   event.preventDefault()
@@ -39,13 +39,13 @@ class AddToIpfs extends Component {
                     className="form-control"
                     placeholder="Enter Patient ID"
                     required />
-            <button type="submit">SUBMIT</button>
+            <button class = "btn btn-success"  type="submit">SUBMIT</button>
          </form>
          {this.state.print ?
           <h5>Invalid Patient ID!!! </h5> : <div></div>
         }
         </div>   
-    	</div>
+      </div>
     );
   }
 }

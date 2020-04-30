@@ -16,7 +16,7 @@ class Display_Data extends Component {
 
     }
   }
-	 render() {
+   render() {
      let tt = []
      if(this.state.retrieved){
       for (var i = this.state.retrieved._hashes.length - 1; i >= 0; i--) {
@@ -25,8 +25,8 @@ class Display_Data extends Component {
 
     }
     return (
-    	<div>
-    	<div>
+      <div>
+      <div>
         <h3> Medical History of Patient ID: {this.props.p_id} </h3>
     
         {this.state.retrieved ? 
@@ -41,7 +41,7 @@ class Display_Data extends Component {
           : <div>  </div>
         }
         </div>   
-    	</div>
+      </div>
     );
   }
 }

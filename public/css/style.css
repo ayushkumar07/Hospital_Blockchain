@@ -1,0 +1,20 @@
+div{
+    margin : 3px;
+    padding : 10px;
+    font-family: 'Baloo Tammudu 2', cursive;
+}
+
+/* button{
+    background-color: #4CAF50; 
+    text-align : center;
+    border: none;
+    color: white;
+    /* padding: 10px; */
+    border-radius: 4px;
+} */
+
+
+input[type=text] {
+    border : 2px solid grey;
+    border-radius: 4px;
+  }

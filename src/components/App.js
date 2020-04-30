@@ -7,7 +7,13 @@ import Register_Patient from './Register_Patient'
 import Display_Data from './Display_Data'
 import Hospital from './Hospital'
 import Metamask from './Metamask'
+// var exphbs  = require('express-handlebars');
  
+// var app = express();
+ 
+// app.engine('handlebars', exphbs());
+// app.set('view engine', 'handlebars');
+
 class App extends Component {
 
   async componentWillMount() {
@@ -36,15 +42,15 @@ class App extends Component {
   async loadBlockchainData() {
     const web3 = window.web3
     // Load account
-    const accounts = await web3.eth.getAccounts()
-    this.setState({ account: accounts[0] })
-    const networkId = await web3.eth.net.getId()
-
-    const networkData = Healthcare.networks[networkId]
+    const accounts = await web3.eth.getAccounts() // get all acocounts 
+    this.setState({ account: accounts[0] })  // using the cuurent active account .... make account address accessable to calling obejct
+    const networkId = await web3.eth.net.getId()  // netork id retrieve
+    // Healthcare contains smart contract named healthcare  properties in json format
+    const networkData =  await Healthcare.networks[networkId] // get all network where smart contract is deployed
     if(networkData){
       const healthcare = await web3.eth.Contract(Healthcare.abi, networkData.address)
-      this.setState({ healthcare })
-      this.state.Hospital_Details = await this.state.healthcare.methods.HospitalDetail(this.state.account).call({from : this.state.account})
+      this.setState({ healthcare }) //same as {healthcare : healthcare} -> healthcare can be accessed from all-over app.js 
+      this.state.Hospital_Details = await this.state.healthcare.methods.HospitalDetail(this.state.account).call({from : this.state.account})  // from : this.state.acoount is the address of node calling smart constract and the other addreess is the argument
       this.state.owner = await this.state.healthcare.methods.checkOwner().call({from: this.state.account})
       this.setState({loading : false})
        }
@@ -54,7 +60,7 @@ class App extends Component {
 
   }
 
-    constructor(props) {
+    constructor(props) { 
     super(props)
     this.state = {
       account: '',
@@ -189,7 +195,7 @@ captureFile(event){
                   ref={(input) => { this.p_id = input }}
                   placeholder="Enter Patient ID"
                   required />
-                  <button type="submit">SUBMIT</button>
+                  <button class = "btn btn-success"  type="submit">SUBMIT</button>
               </form>
               {this.state.print ?
                 <Display_Data
@@ -230,7 +236,7 @@ captureFile(event){
                   ref={(input) => { this.h_id = input }}
                   placeholder="E.g. 0x692991888659c3e8Ad043B262B0AF97415eA4aDB"
                   required />
-                  <button type="submit">SUBMIT</button>
+                  <button class = "btn btn-success" type="submit">SUBMIT</button>
               </form>
               {this.state.h_id ?
                 <Hospital
@@ -246,4 +252,8 @@ captureFile(event){
   }
 }
  
+
+// app.use(PORT,() = > {
+//   console.log()
+// })
 export default App;

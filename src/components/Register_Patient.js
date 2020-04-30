@@ -9,11 +9,11 @@ class Register_Patient extends Component {
     }
   }
 
-	 render() {
+   render() {
 
     return (
-    	<div>
-    	<div>
+      <div>
+      <div>
         <h3> Register Patient </h3>
          <form onSubmit={(event) => {
                   event.preventDefault()
@@ -64,11 +64,11 @@ class Register_Patient extends Component {
                     ref={(input) => { this.bloodgrp = input }}
                     required />
                </label>
-          <button type="submit">SUBMIT</button>
+          <button class = "btn btn-success"  type="submit">SUBMIT</button>
          </form>
          {this.state.print}
         </div>   
-    	</div>
+      </div>
     );
   }
 }

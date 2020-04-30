@@ -14,17 +14,17 @@ class Hospital extends Component {
 
     }
   }
-	 render() {
+   render() {
 
     return (
-    	<div>
+      <div>
         
         { 
           this.state.retrieved ? <div> <h5>Hospital Name:  {this.state.retrieved.hname} </h5>
           <h5>Hospital Address : {this.state.retrieved.hadd}, {this.state.retrieved.hcity}, {this.state.retrieved.hcountry} </h5>
           </div> : <h5> </h5>
         } 
-    	</div>
+      </div>
     );
   }
 }
