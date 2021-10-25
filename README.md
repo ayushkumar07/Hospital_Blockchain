@@ -2,7 +2,9 @@
 
 Link to the website : https://gateway.pinata.cloud/ipfs/QmeDdTHeAd5QWjHMRaUu6RV8fiYhDo6pC8vtXosf7xV9vi/
 
+# About
 
+Stores Patients Data in blockchain and hospitals are interconneted in a network. They can access those without the help of a centralized database server.
 
 To run this website, you need to follow some steps for initialisation. This is one time initialization process, that is, you don't have to follow these instructions everytime you run this website.
 
